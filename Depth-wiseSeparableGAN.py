@@ -116,7 +116,7 @@ transform = torchvision.transforms.Compose([
     torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
 
-data_dir = "这里是放图片的文件夹路径"
+data_dir = "这里是放图片的文件夹路径" # the path of the folder that contains the imgs
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=16, shuffle=True)
 
@@ -159,7 +159,7 @@ for epoch in range(2000):
     
         images = g_output
         
-    path = "./data/anime_gen/"+str(epoch+1)+".jpg" # 保存图片的路径，请自行修改
+    path = "./data/anime_gen/"+str(epoch+1)+".jpg" # 保存图片的路径，请自行修改 you need to change this line on you own
 
     size_figure_grid = 4
     fig, ax = plt.subplots(size_figure_grid, size_figure_grid, figsize=(4, 4))
