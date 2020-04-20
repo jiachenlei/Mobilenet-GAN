@@ -118,7 +118,7 @@ def train_GAN():
     transform = transforms.Compose([
         transforms.Resize((64,64)),
         transforms.ToTensor(),
-        # transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
+        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
     ])
     data_dir = "保存图片的文件夹的路径" # the path of the folder that contains the imgs
     
