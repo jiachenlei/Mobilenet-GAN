@@ -10,35 +10,6 @@ import itertools
 import matplotlib.pyplot as plt
 from PIL import Image
 import pickle
-
-
-# class Discriminator(nn.Module):
-#     # initializers
-#     def __init__(self, d=128):
-#         super(Discriminator, self).__init__()
-#         self.conv1 = nn.Conv2d(3, d, 4, 2, 1)
-#         self.conv2 = nn.Conv2d(d, d * 2, 4, 2, 1)
-#         self.conv2_bn = nn.BatchNorm2d(d * 2)
-#         self.conv3 = nn.Conv2d(d * 2, d * 4, 4, 2, 1)
-#         self.conv3_bn = nn.BatchNorm2d(d * 4)
-#         self.conv4 = nn.Conv2d(d * 4, d * 8, 4, 2, 1)
-#         self.conv4_bn = nn.BatchNorm2d(d * 8)
-#         self.conv5 = nn.Conv2d(d * 8, 1, 4, 1, 0)
-#
-#     # weight_init
-#     def weight_init(self, mean, std):
-#         for m in self._modules:
-#             normal_init(self._modules[m], mean, std)
-#
-#     # forward method
-#     def forward(self, input):
-#         x = F.leaky_relu(self.conv1(input), 0.2)
-#         x = F.leaky_relu(self.conv2_bn(self.conv2(x)), 0.2)
-#         x = F.leaky_relu(self.conv3_bn(self.conv3(x)), 0.2)
-#         x = F.leaky_relu(self.conv4_bn(self.conv4(x)), 0.2)
-#         x = F.sigmoid(self.conv5(x))
-#
-#         return x
     
 class Discriminator(nn.Module):
 
@@ -133,17 +104,11 @@ dnet = Discriminator(128)
 gnet = Generator(128)
 dnet.weight_init(mean=0.0, std=0.02)
 gnet.weight_init(mean=0.0, std=0.02)
-# dnet.load_state_dict(torch.load("./pth/dnet.pth"))
 dnet = dnet.cuda()
 gnet = gnet.cuda()
-# gnet.load_state_dict(torch.load("./pth/gnet_v3.pth"))
 loss = nn.MSELoss().cuda()
-# gloss = nn.MSELoss()
 doptimizer = optim.Adam(dnet.parameters(),lr=0.01,betas=(0.5,0.999))
 goptimizer = optim.Adam(gnet.parameters(),lr=0.001,betas=(0.5,0.999))
-
-# doptimizer = optim.SGD(dnet.parameters(),lr=0.01)
-# goptimizer = optim.SGD(gnet.parameters(),lr=0.001)
 
 transform = torchvision.transforms.Compose([
     torchvision.transforms.Resize((64,64)),
@@ -151,7 +116,7 @@ transform = torchvision.transforms.Compose([
     torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
 
-data_dir = "C:\\Users\\Administrator\\PycharmProjects\\MachineLearning\\venv\\pytorch\\data\\anime_faces"
+data_dir = "这里是放图片的文件夹路径"
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=16, shuffle=True)
 
@@ -194,7 +159,7 @@ for epoch in range(2000):
     
         images = g_output
         
-    path = "./data/anime_gen/"+str(epoch+1)+".jpg"
+    path = "./data/anime_gen/"+str(epoch+1)+".jpg" # 保存图片的路径，请自行修改
 
     size_figure_grid = 4
     fig, ax = plt.subplots(size_figure_grid, size_figure_grid, figsize=(4, 4))
@@ -215,12 +180,3 @@ for epoch in range(2000):
     torch.save(gnet.state_dict(),'./pth/gnet.pth')
     torch.save(dnet.state_dict(),'./pth/dnet.pth')
 
-
-# gnet.load_state_dict(torch.load("./gnet.pth"))
-# input = torch.rand(16,1,10,10)
-# output1 = gnet(input)
-# output2 = dnet(output1)
-# print(output1)
-# for i in range(64):
-#     img = torchvision.transforms.ToPILImage()(output1[i])
-#     img.show()
