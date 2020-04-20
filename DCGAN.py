@@ -120,7 +120,7 @@ def train_GAN():
         transforms.ToTensor(),
         # transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
     ])
-    data_dir = "C:\\Users\\Administrator\\PycharmProjects\\MachineLearning\\venv\\pytorch\\data\\anime_faces"
+    data_dir = "保存图片的文件夹的路径" # the path of the folder that contains the imgs
     
     dset = datasets.ImageFolder(data_dir, transform)
     train_loader = torch.utils.data.DataLoader(dset, batch_size=16, shuffle=True)
@@ -206,34 +206,12 @@ def train_GAN():
         torch.save(D.state_dict(), './pth/DCGAN_d.pth')
         epoch_end_time = time.time()
         per_epoch_ptime = epoch_end_time - epoch_start_time
-        p = 'data/anime_dcgen/' + str(epoch + 1) + '.png'
+        p = 'data/anime_dcgen/' + str(epoch + 1) + '.png' # you need change these two lines on your own
         fixed_p = 'data/anime_dcgen/' + "_"+str(epoch + 1) + '.png'
         show_result(G,(epoch + 1),fixed_z_,  path=p, isFix=False)
         show_result(G,(epoch + 1),fixed_z_, path=fixed_p, isFix=True)
         print('[%d/%d] - ptime: %.2f, loss_d: %.3f, loss_g: %.3f' % ((epoch + 1), train_epoch, per_epoch_ptime,D_losses/80,
                                                                      G_losses/80))
 
-
-def test_GAN():
-    for i in range(10):
-        G = generator(128)
-        G.load_state_dict(torch.load("./pth/DCGAN_g.pth"))
-        z_ = torch.randn((5 * 5, 100)).view(-1, 100, 1, 1)
-        images = G(z_)
-        size_figure_grid = 5
-        fig, ax = plt.subplots(size_figure_grid, size_figure_grid, figsize=(5, 5))
-        for i, j in itertools.product(range(size_figure_grid), range(size_figure_grid)):
-            ax[i, j].get_xaxis().set_visible(False)
-            ax[i, j].get_yaxis().set_visible(False)
-        
-        for k in range(5 * 5):
-            i = k // 5
-            j = k % 5
-            ax[i, j].cla()
-            ax[i, j].imshow((images[k].cpu().data.numpy().transpose(1, 2, 0) + 1) / 2)
-        
-        plt.show()
-        plt.pause(2)
-        plt.close()
         
 train_GAN()
