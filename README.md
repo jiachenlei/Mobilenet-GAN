@@ -7,3 +7,4 @@ This repo take depth-wise seperable structure in Mobilenet_v1 as the discriminat
 
 ![MBN+GAN](https://github.com/jasonrayshd/Mobilenet-GAN/blob/master/Depth-Wise%20Seperable%20GAN.gif)
 
+![normalize to (0,1) instead of (-1,1)](https://github.com/jasonrayshd/Mobilenet-GAN/blob/master/%E5%BD%92%E4%B8%80%E5%8C%96%E5%88%B0(0%2C1).gif)
