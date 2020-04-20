@@ -5,3 +5,5 @@ This repo take depth-wise seperable structure in Mobilenet_v1 as the discriminat
 
 ![DCGAN](https://github.com/jasonrayshd/Mobilenet-GAN/blob/master/DCGAN.gif)
 
+![MBN+GAN](https://github.com/jasonrayshd/Mobilenet-GAN/blob/master/Depth-Wise%20Seperable%20GAN.gif)
+
