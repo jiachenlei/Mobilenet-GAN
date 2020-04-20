@@ -3,4 +3,5 @@
 
 This repo take depth-wise seperable structure in Mobilenet_v1 as the discriminator of GAN.However the network is not perfectly optimized,so you may find it unstable and converge very slowly.It takes me 100+ epochs to train 1280 anime images to get a almost satisfing result. the code is easy to understand and free to take.
 
-[]()
+![DCGAN](https://github.com/jasonrayshd/Mobilenet-GAN/blob/master/DCGAN.gif)
+
