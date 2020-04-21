@@ -9,7 +9,6 @@ import os
 import itertools
 import matplotlib.pyplot as plt
 from PIL import Image
-import pickle
     
 class Discriminator(nn.Module):
 
@@ -106,9 +105,9 @@ dnet.weight_init(mean=0.0, std=0.02)
 gnet.weight_init(mean=0.0, std=0.02)
 dnet = dnet.cuda()
 gnet = gnet.cuda()
-loss = nn.MSELoss().cuda()
-doptimizer = optim.Adam(dnet.parameters(),lr=0.01,betas=(0.5,0.999))
-goptimizer = optim.Adam(gnet.parameters(),lr=0.001,betas=(0.5,0.999))
+loss = nn.BCELoss().cuda()
+doptimizer = optim.Adam(dnet.parameters(),lr=0.0002,betas=(0.5,0.999))
+goptimizer = optim.Adam(gnet.parameters(),lr=0.0002,betas=(0.5,0.999))
 
 transform = torchvision.transforms.Compose([
     torchvision.transforms.Resize((64,64)),
@@ -120,8 +119,7 @@ data_dir = "这里是放图片的文件夹路径" # the path of the folder that 
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=16, shuffle=True)
 
-for epoch in range(2000):
-    print("epoch %d"%(epoch+1))
+for epoch in range(50):
     images = []
     d_avgloss = 0
     g_avgloss = 0
@@ -145,13 +143,10 @@ for epoch in range(2000):
         
         D_train_loss = D_true_loss+D_fake_loss
         
-        D_train_loss.backward()
-        
+        D_train_loss.backward(retain_graph=True)
         doptimizer.step()
         goptimizer.zero_grad()
-        ran_input = torch.randn((16, 100, 1, 1)).cuda()
-        g_output = gnet(ran_input)
-        d_output = dnet(g_output).squeeze()
+        # update simultaneously
         G_train_loss = loss(d_output,real_y)
         g_avgloss += G_train_loss.data
         G_train_loss.backward()
@@ -176,7 +171,7 @@ for epoch in range(2000):
     
     fig.text(0.5, 0.04, "epoch "+str(epoch+1), ha='center')
     plt.savefig(path)
-    print("dloss:%.3f gloss:%.3f" %(d_avgloss/32,g_avgloss/16))
-    torch.save(gnet.state_dict(),'./pth/gnet.pth')
-    torch.save(dnet.state_dict(),'./pth/dnet.pth')
+    print("[epoch: %/50] dloss:%.3f gloss:%.3f" %(epoch,d_avgloss/32,g_avgloss/16))
+    torch.save(gnet.state_dict(),'./gnet.pth')
+    torch.save(dnet.state_dict(),'./dnet.pth')
 
